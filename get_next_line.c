@@ -51,7 +51,7 @@ static char *line(char *buffer)
     }
     return(line);
 }
-static char *left_line(char *buffer)
+static char *left_from_line(char *buffer)
 {
     char *left;
     int i;
@@ -63,7 +63,7 @@ static char *left_line(char *buffer)
     if(buffer[i] == 0)
     {
         return(NULL);
-        free[buffer]
+        free(buffer);
     }
     left = ft_calloc( ft_strlen(buffer) - i ,sizeof(char));
     while(buffer[i + 1])
@@ -74,44 +74,66 @@ static char *left_line(char *buffer)
     }
     return(left);
 }
+static char *join_free(char *total_buffer,char *minibuf)
+{
+    char *tmp;
+    tmp = ft_strjoin(total_buffer,minibuf);
+    free(total_buffer);
+    return(tmp);
+}
+static char *read_file(int fd, char *buffer)
+{
+    int byt_read;
+    char *alocbuf;
+    byt_read = 1;
 
+    if(!buffer)
+    {
+        buffer = ft_calloc(1,sizeof(char));
+    }
+    alocbuf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+    if(!alocbuf)
+    {
+        free(buffer);
+        return(NULL);
+    }
+    while(byt_read > 0)
+    {
+        byt_read = read(fd,alocbuf,BUFFER_SIZE);
+        if(byt_read == -1)
+        {
+            free(alocbuf);
+            return(NULL);
+        }
+        buffer = join_free(buffer,alocbuf);
+        if(ft_strchr(buffer,'\n'))
+            break;
+    }
+    free(alocbuf);
+    return(buffer);
+
+}
 
 
 char *get_next_line(int fd)
 {
+    static char *buffer;
+    char *line1;
+    char *phrase;
 
-    static char *ptr;
-    static char *p;
-    size_t n;
-    int i;
-    char s;
-    char *c = calloc(2 , sizeof(char));
-
-    while((n = read(fd , c, 1)) > 0)
-    {   
-        //c[n] = 0 ;
-        if(c[n - 1] == '\n')
-            break;
-        ptr = ft_strjoin(ptr,c);
-    }
-    free(c);
-	ptr = ft_strjoin(ptr,"\n");
-    p = ft_strdup(ptr);
-    free(ptr);
-    ptr = NULL;
-    return(p);
- }
+    phrase = read_file(fd,buffer);
+    line1 = line(phrase);
+    buffer = left_from_line(phrase);
+    return(line1);
+}
  int main()
 {  
-    /*int fd = open("ans.txt",O_RDONLY | O_CREAT , 0777);
+    int fd = open("ans.txt",O_RDWR | O_CREAT , 0777);
     printf("%s",get_next_line(fd));
     printf("%s",get_next_line(fd));
-     printf("%s",get_next_line(fd));
-     printf("%s",get_next_line(fd));
-    printf("%s",get_next_line(fd));*/
-    char t[]="anassguenda\n";
-    //printf("%s\n\n",line(t));
-    printf("%s",left_line(t));
+    printf("%s",get_next_line(fd));
+
+    
 
 }
 

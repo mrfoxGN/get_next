@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <limits.h>
+# include <stdint.h>
 
 
 #ifndef BUFFER_SIZE
@@ -29,6 +30,7 @@ char    *get_next_line(int fd);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strchr(const char *s, int c);
 
 void	*ft_calloc(size_t count, size_t size);
 #endif

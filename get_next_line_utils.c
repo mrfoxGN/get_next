@@ -124,16 +124,16 @@ void	*ft_calloc(size_t count, size_t size)
 	}
 	return (ptr);
 }
- int check(char *str)
-{	
-	int i = 0;
-    while(str[i])
-    {
-        if( str[i] == '\n')
-        {
-            return(i);
-        }
-        i++;
-    }
-    return(0);
+
+char	*ft_strchr(const char *s, int c)
+{
+	while ((char)c != *s)
+	{
+		if (!*s)
+		{
+			return (0);
+		}
+		s++;
+	}
+	return ((char *)s);
 }
