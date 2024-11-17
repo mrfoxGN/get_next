@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char *line(char *buffer)
 {
@@ -102,22 +102,25 @@ static char *read_file(int fd, char *buffer)
 
 char *get_next_line(int fd)
 {
-    static char *buffer;
+    static char *buffer[1024];
     char *line1;
     char *phrase;
 
-    phrase = read_file(fd,buffer);
-    line1 = line(phrase);
-    buffer = left_from_line(phrase);
+if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+    buffer[fd]= read_file(fd,buffer[fd]);
+    if (!buffer[fd])
+		return (NULL);
+    line1 = line(buffer[fd]);
+    buffer[fd] = left_from_line(buffer[fd]);
     return(line1);
 }
-/* int main()
+int main()
 {  
     int fd = open("ans.txt",O_RDWR | O_CREAT , 0777);
-    int fd2 = open("anis.txt",O_RDWR | O_CREAT , 0777);
+    int fd2 = open("anis.txt",O_RDWR| O_CREAT , 0777);
     printf("%s",get_next_line(fd));
-   printf("%s",get_next_line(fd2));
+    printf("%s",get_next_line(fd2));
     
 
-}*/
-
+}
