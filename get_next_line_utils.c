@@ -12,54 +12,34 @@
 
 #include "get_next_line.h"
 
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*ptr;
+	int		sizetotal;
+	char	*res;
 	int		i;
 	int		j;
 
 	i = 0;
+	sizetotal = ft_strlen(s1) + ft_strlen(s2);
+	res = malloc(sizeof(char) * (sizetotal + 1));
+	if (!res || !s1 || !s2)
+		return (NULL);
+	while (s1[i] != 0)
+	{
+		res[i] = s1[i];
+		i++;
+	}
 	j = 0;
-	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!ptr || (!s1 && !s2))
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	while (s1[i])
+	while (s2[j] != 0)
 	{
-		ptr[i] = s1[i];
+		res[i] = s2[j];
 		i++;
+		j++;
 	}
-	while (s2[j])
-		ptr[i++] = s2[j++];
-	ptr[i] = '\0';
-	return (ptr);
+	res[sizetotal] = 0;
+	return (res);
 }
 
-char	*ft_strdup(const char *s)
-{
-	char	*chaine;
-	int		a;
-	int		i;
-
-	i = 0;
-	a = ft_strlen(s);
-	chaine = (char *)malloc((a + 1) * sizeof(char));
-	if (chaine == NULL)
-	{
-		return (NULL);
-	}
-	while (s[i])
-	{
-		chaine[i] = s[i];
-		i++;
-	}
-	chaine[i] = '\0';
-	return (chaine);
-}
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -76,53 +56,29 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	*ft_calloc(size_t elementCount, size_t elementSize)
 {
-	char	*p;
-	size_t	i;
-	char	*s2;
+	char	*res;
 
-	i = 0;
-	s2 = (char *)s;
-	if (!s)
+	res = malloc(elementSize * elementCount);
+	if (!res)
 		return (NULL);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	p = ft_calloc(len + 1, sizeof(char));
-	if (!p)
-		return (NULL);
-	while (i < len)
-	{
-		p[i] = s2[start + i];
-		i++;
-	}
-	return (p);
+	ft_bzero(res, elementSize * elementCount);
+	return (res);
 }
-void	*ft_calloc(size_t count, size_t size)
+
+void	ft_bzero(void *s, size_t n)
 {
-	char	*ptr;
+	char	*str;
 	size_t	i;
 
+	str = (char *)s;
 	i = 0;
-	if (!count || !size)
-		return (malloc(0));
-	if ((count  > SIZE_MAX / size) && size != 0)
+	while (i < n)
 	{
-		return (NULL);
-	}
-	ptr = malloc(count * size);
-	if (!ptr)
-	{
-		return (NULL);
-	}
-	while (i < count * size)
-	{
-		ptr[i] = 0;
+		str[i] = '\0';
 		i++;
 	}
-	return (ptr);
 }
 
 char	*ft_strchr(const char *s, int c)
