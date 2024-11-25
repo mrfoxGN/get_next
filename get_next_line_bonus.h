@@ -20,7 +20,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 10000000000
 # endif
 
 char	*ft_strjoin(char const *s1, char const *s2);
